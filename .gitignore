@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 
 # IntelliJ
+.idea/
 .idea
 *.iml
 out
