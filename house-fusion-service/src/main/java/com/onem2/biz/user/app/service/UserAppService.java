@@ -59,7 +59,7 @@ public class UserAppService {
      * @Date: 2018/4/12 15:01
      * @Version: 2018/4/12 15:01
      */
-    public UserDto findByUserName(String userName) throws Exception{
+    public UserDto findByUserName(String userName) throws BusinessException{
         return this.userDomainService.findByUserName(userName);
     }
 

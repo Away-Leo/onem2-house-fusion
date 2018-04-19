@@ -149,7 +149,7 @@ public class BaseRepositoryImpl<T extends BaseEntity, ID extends Serializable> e
 	@Transactional
 	public T saveEntity(T t) {
 	    t.setRawAddTime(new Date());
-	    if(ObjectHelper.isNotEmpty(CPContext.getContext().getSeUserInfo())) t.setRawCreator(CPContext.getContext().getSeUserInfo().getUsername());
+	    if(ObjectHelper.isNotEmpty(CPContext.getContext().getSeUserInfo())) t.setRawCreator(CPContext.getContext().getSeUserInfo().getUserName());
 		return this.saveAndFlush(t);
 	}
 
@@ -157,14 +157,14 @@ public class BaseRepositoryImpl<T extends BaseEntity, ID extends Serializable> e
 	@Transactional
 	public T updateEntity(T t) {
 		t.setRawUpdateTime(new Date());
-		if(ObjectHelper.isNotEmpty(CPContext.getContext().getSeUserInfo())) t.setRawModifier(CPContext.getContext().getSeUserInfo().getUsername());
+		if(ObjectHelper.isNotEmpty(CPContext.getContext().getSeUserInfo())) t.setRawModifier(CPContext.getContext().getSeUserInfo().getUserName());
 	    return this.saveAndFlush(t);
 	}
 
 	@Override
 	public T logicDelete(T t) {
 		t.setDeleted(true);
-		if(ObjectHelper.isNotEmpty(CPContext.getContext().getSeUserInfo()))t.setRawModifier(CPContext.getContext().getSeUserInfo().getUsername());
+		if(ObjectHelper.isNotEmpty(CPContext.getContext().getSeUserInfo()))t.setRawModifier(CPContext.getContext().getSeUserInfo().getUserName());
 	    return this.entityManager.merge(t);
 	}
 

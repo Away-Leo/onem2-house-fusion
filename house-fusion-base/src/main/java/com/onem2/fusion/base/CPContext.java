@@ -1,6 +1,9 @@
 
 package com.onem2.fusion.base;
 
+import com.onem2.fusion.base.util.ObjectHelper;
+import org.springframework.beans.BeanUtils;
+
 import java.io.Serializable;
 
 /**
@@ -13,7 +16,7 @@ public class CPContext {
 
     private Long merchantId;
 
-    private SeUserInfo seUserInfo;
+    private static SeUserInfo seUserInfo;
 
     private CPContext() {
 
@@ -56,16 +59,60 @@ public class CPContext {
     }
 
     /**
+     * @Author: Away
+     * @Title: copyVlueAndSetSeUserInfo
+     * @Description: 为当前用户赋值
+     * @Param: object
+     * @Return: void
+     * @Date: 2018/4/17 10:11
+     * @Version: 2018/4/17 10:11
+     */
+    public static void copyValueAndSetSeUserInfo(Object object){
+        if(ObjectHelper.isNotEmpty(object)){
+            if(ObjectHelper.isEmpty(getContext())){
+                LOCAL.set(new CPContext());
+            }
+            if(ObjectHelper.isEmpty(getContext().seUserInfo)){
+                getContext().seUserInfo=new SeUserInfo();
+            }
+            BeanUtils.copyProperties(object,getContext().seUserInfo);
+        }
+    }
+
+    /**
      * 用户信息
      */
     public static class SeUserInfo implements Serializable {
         private Long id;
-        private String username;
+        private String userName;
         private String displayName;
         private Long rId;//关联id
         private String type;
-         private String phone;
-         private String authUrls;
+        private String phone;
+        /**
+         * 具有权限的接口
+         **/
+        private String authUrls;
+        /**平台编号**/
+        private String platformCode;
+        /**私有密钥**/
+        private String privateKey;
+
+        public String getPrivateKey() {
+            return privateKey;
+        }
+
+        public void setPrivateKey(String privateKey) {
+            this.privateKey = privateKey;
+        }
+
+        public String getPlatformCode() {
+            return platformCode;
+        }
+
+        public void setPlatformCode(String platformCode) {
+            this.platformCode = platformCode;
+        }
 
         public String getAuthUrls() {
             return authUrls;
@@ -83,12 +130,12 @@ public class CPContext {
             this.id = id;
         }
 
-        public String getUsername() {
-            return username;
+        public String getUserName() {
+            return userName;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
 
         public String getDisplayName() {

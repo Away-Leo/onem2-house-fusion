@@ -19,8 +19,6 @@ import java.util.*;
 @Setter
 public class SysMenuConfigDto extends BaseDto {
 
-    private Long id;
-
     /**用户ID**/
     private Long userId;
 

@@ -67,7 +67,7 @@ public class SysMenuConfigDomainService {
                 SysMenuConfigDto oldData = this.findById(sourceData.getId());
                 oldData = ObjectProperUtil.compareAndValue(sourceData, oldData, false, new String[]{"menuUrl"});
                 oldData.setRawUpdateTime(new Date());
-                oldData.setRawModifier(CPContext.getContext().getSeUserInfo().getUsername());
+                oldData.setRawModifier(CPContext.getContext().getSeUserInfo().getUserName());
                 return this.sysMenuConfigRepository.updateEntity(oldData.toEntity(SysMenuConfig.class)).to(SysMenuConfigDto.class);
             } else {
                 return this.sysMenuConfigRepository.saveEntity(sourceData.toEntity(SysMenuConfig.class)).to(SysMenuConfigDto.class);

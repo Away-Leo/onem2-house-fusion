@@ -43,7 +43,7 @@ public class UserMenuAuthConfDomainService {
             for(UserMenuAuthConfDto temp:datas){
                 UserMenuAuthConf menuAuthConf=temp.toEntity(UserMenuAuthConf.class);
                 menuAuthConf.setUserId(CPContext.getContext().getSeUserInfo().getId());
-                menuAuthConf.setRawCreator(CPContext.getContext().getSeUserInfo().getUsername());
+                menuAuthConf.setRawCreator(CPContext.getContext().getSeUserInfo().getUserName());
                 saveData.add(menuAuthConf);
             }
             this.userMenuAuthConfRepository.deleteByUserId(CPContext.getContext().getSeUserInfo().getId());

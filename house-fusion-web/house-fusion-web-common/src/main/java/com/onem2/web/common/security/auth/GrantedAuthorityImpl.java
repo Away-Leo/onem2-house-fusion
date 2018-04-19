@@ -1,5 +1,6 @@
 package com.onem2.web.common.security.auth;
 
+import com.onem2.biz.user.app.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -14,8 +15,22 @@ public class GrantedAuthorityImpl implements GrantedAuthority {
 
     private String authority;
 
+    /**当前登录用户**/
+    private UserDto userDto;
+
     public GrantedAuthorityImpl(String authority) {
         this.authority = authority;
+    }
+
+    public GrantedAuthorityImpl(UserDto userDto) {
+        this.userDto=userDto;
+    }
+    public GrantedAuthorityImpl(String authority,UserDto userDto) {
+        this.userDto=userDto;
+    }
+
+    public UserDto getUserDto() {
+        return userDto;
     }
 
     public void setAuthority(String authority) {

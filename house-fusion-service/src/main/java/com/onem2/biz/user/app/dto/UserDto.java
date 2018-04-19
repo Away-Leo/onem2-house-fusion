@@ -50,8 +50,13 @@ public class UserDto extends BaseDto {
     /**/
     private Date registerDate;
 
-    public String getCredentialsSalt() {
-        return userName + salt;
-    }
+    /**具有权限的接口**/
+    private String authUrls;
+
+    /**平台编码**/
+    private String platformCode;
+
+    /**私有密钥**/
+    private String privateKey;
 
 }

@@ -5,12 +5,17 @@ import com.alibaba.fastjson.JSON;
 import java.io.Serializable;
 
 /**
- * Created by dujy on 2017-05-21.
+ * @Title: CPViewResultInfo.java
+ * @Description: 统一返回结果
+ * @Author: Away
+ * @Date: 2018/4/16 14:21
+ * @Copyright: 重庆壹平方米网络科技有限公司
+ * @Version: V1.0
  */
 public class CPViewResultInfo implements Serializable{
 
     private Boolean success =Boolean.TRUE;
-    private String code = "000000";
+    private String code = "";
     private String message;
     private int draw;
     private Object data;
@@ -21,6 +26,11 @@ public class CPViewResultInfo implements Serializable{
         this.message="成功";
     }
 
+    public void newFalse(Exception e,String falseCode){
+        this.success=false;
+        this.code=falseCode;
+        this.message=e.getMessage();
+    }
     public void newFalse(Exception e){
         this.success=false;
         this.message=e.getMessage();

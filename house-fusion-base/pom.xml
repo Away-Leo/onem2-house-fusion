@@ -21,6 +21,7 @@
             <groupId>com.onem2</groupId>
             <artifactId>util</artifactId>
             <version>2.2.20170605</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -2,7 +2,9 @@ package com.onem2.web.common.security.auth;
 
 import com.onem2.biz.user.app.dto.UserDto;
 import com.onem2.biz.user.app.service.UserAppService;
-import lombok.extern.log4j.Log4j;
+import com.onem2.fusion.base.CPContext;
+import com.onem2.fusion.base.enums.ENUM_EXCEPTION;
+import com.onem2.fusion.base.util.ObjectHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,16 +38,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try{
-            UserDto user = userAppService.findByUserName(username);
-            if(user == null){
-                throw new UsernameNotFoundException(username);
-            }
-            return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), emptyList());
-        }catch (Exception e){
-            log.error("spring security认证服务获得用户出错",e);
-            throw new UsernameNotFoundException(username);
+        //查询数据库
+        UserDto user = userAppService.findByUserName(username);
+        if(ObjectHelper.isEmpty(user)){
+            throw new UsernameNotFoundException(ENUM_EXCEPTION.E10011.code,new Throwable(ENUM_EXCEPTION.E10011.msg));
         }
+        CPContext.copyValueAndSetSeUserInfo(user);
+        //将查找后的用户作为授权信息传递
+        return new org.springframework.security.core.userdetails.User(user.getId()+"", user.getPassword(), emptyList());
     }
 
 }

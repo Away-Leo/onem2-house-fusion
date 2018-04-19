@@ -51,7 +51,7 @@ public class UserDomainService extends BaseDomainService<UserRepository, User, U
      * @Date: 2018/4/12 11:17
      * @Version: 2018/4/12 11:17
      */
-    public UserDto findByUserName(String userName) throws Exception {
+    public UserDto findByUserName(String userName) throws BusinessException {
         if (ObjectHelper.isNotEmpty(userName)) {
             User user=this.userRepository.findByUserNameAndDeletedFalse(userName);
             if(ObjectHelper.isNotEmpty(user)){

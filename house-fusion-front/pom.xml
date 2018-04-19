@@ -64,6 +64,7 @@
                 <configuration>
                     <mainClass>com.onem2.Main</mainClass>
                     <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
+                    <fork>true</fork>
                 </configuration>
                 <executions>
                     <execution>

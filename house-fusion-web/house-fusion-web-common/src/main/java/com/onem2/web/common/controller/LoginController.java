@@ -37,29 +37,6 @@ public class LoginController extends AbstractCommonController {
 
     /**
      * @Author: Away
-     * @Title: passwordLogin
-     * @Description: 用户登录
-     * @Param: cpViewResultInfo 返回信息
-     * @Param: httpServletRequest 请求
-     * @Param: loginModel 登录数据模型
-     * @Return: com.onem2.web.common.dto.CPViewResultInfo
-     * @Date: 2018/4/12 15:57
-     * @Version: 2018/4/12 15:57
-     */
-    @PostMapping(value = "/passwordLogin.json",name = "登录注册-用户登录")
-    public CPViewResultInfo passwordLogin(CPViewResultInfo cpViewResultInfo,HttpServletRequest httpServletRequest, @RequestBody UserDto loginModel) {
-        try {
-            cpViewResultInfo.newSuccess(loginComponent.loginWithPassword(httpServletRequest, loginModel));
-        }catch (Exception e){
-            cpViewResultInfo.newFalse(e);
-            logger.error("用户登录出错",e);
-        }
-        return cpViewResultInfo;
-    }
-
-
-    /**
-     * @Author: Away
      * @Title: passwordRegister
      * @Description: 用户注册
      * @Param: cpViewResultInfo 数据交互体
