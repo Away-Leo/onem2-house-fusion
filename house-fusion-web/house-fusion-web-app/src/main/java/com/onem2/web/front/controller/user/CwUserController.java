@@ -2,10 +2,8 @@ package com.onem2.web.front.controller.user;
 
 import com.onem2.biz.user.app.dto.UserDto;
 import com.onem2.biz.user.app.service.UserAppService;
-import com.onem2.biz.user.app.service.UserInfoAppService;
 import com.onem2.fusion.base.dtos.DataTablesPage;
 import com.onem2.fusion.base.page.DataTablesPageRequest;
-import com.onem2.web.common.component.UploadFileComponent;
 import com.onem2.web.common.dto.CPViewResultInfo;
 import com.onem2.web.front.controller.AbstractFrontController;
 import org.slf4j.Logger;
@@ -26,17 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CwUserController extends AbstractFrontController {
 
-    @Autowired
-    private UserInfoAppService UserInfoAppService;
-
-
-    @Autowired
-    private UploadFileComponent uploadFileComponent;
-
-    @Autowired
-    private UserAppService userAppService;
+    private final UserAppService userAppService;
 
     private static final Logger logger= LoggerFactory.getLogger(CwUserController.class);
+
+    @Autowired
+    public CwUserController(UserAppService userAppService) {
+        this.userAppService = userAppService;
+    }
 
     @PostMapping(value = "/userInfo/getUsersPageWithoutUser.json",name = "用户-获得用户列表(排除一般用户)")
     public CPViewResultInfo getUsersPageWithoutUser(DataTablesPage dataTablesPage, CPViewResultInfo info, UserDto condition){

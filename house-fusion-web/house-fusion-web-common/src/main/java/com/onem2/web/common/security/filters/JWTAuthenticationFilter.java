@@ -21,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -37,8 +36,6 @@ import java.util.Map;
  * 该类继承自BasicAuthenticationFilter，在doFilterInternal方法中，
  * 从http头的Authorization 项读取token数据，然后用Jwts包提供的方法校验token的合法性。
  * 如果校验通过，就认为这是一个取得授权的合法请求
- *
- * @author zhaoxinguo on 2017/9/13.
  */
 @Slf4j
 public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
@@ -58,12 +55,17 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException {
         //进行签名认证
         try {
-            UsernamePasswordAuthenticationToken authentication = getAuthentication(request,response);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            chain.doFilter(request, response);
+            String url=getRequestURI(request);
+            if(url.startsWith("/common/")){
+                chain.doFilter(request,response);
+            }else{
+                UsernamePasswordAuthenticationToken authentication = getAuthentication(request,response);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                chain.doFilter(request, response);
+            }
         } catch (Exception e) {
             log.error("",e);
             gennerateResponse(request,response,e.getMessage());

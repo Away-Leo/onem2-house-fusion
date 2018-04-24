@@ -2,17 +2,16 @@ package com.onem2.web.common.controller;
 
 
 import com.onem2.biz.user.app.dto.UserDto;
+import com.onem2.fusion.base.components.FastDFSClientWrapper;
 import com.onem2.web.common.component.LoginComponent;
 import com.onem2.web.common.dto.CPViewResultInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -23,16 +22,19 @@ import javax.servlet.http.HttpServletRequest;
  * @Copyright: 重庆壹平方米网络科技有限公司
  * @Version: V1.0
  */
+@Slf4j
 @RestController
 public class LoginController extends AbstractCommonController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
     private final LoginComponent loginComponent;
 
+    private final FastDFSClientWrapper fastDFSClientWrapper;
+
+
     @Autowired
-    public LoginController(LoginComponent loginComponent) {
+    public LoginController(LoginComponent loginComponent,FastDFSClientWrapper fastDFSClientWrapper) {
         this.loginComponent = loginComponent;
+        this.fastDFSClientWrapper=fastDFSClientWrapper;
     }
 
     /**
@@ -52,7 +54,7 @@ public class LoginController extends AbstractCommonController {
             cpViewResultInfo.newSuccess(loginComponent.register(loginModel));
         }catch (Exception e){
             cpViewResultInfo.newFalse(e);
-            logger.error("用户注册出错",e);
+            log.error("用户注册出错",e);
         }
         return cpViewResultInfo;
     }
@@ -74,7 +76,18 @@ public class LoginController extends AbstractCommonController {
             info.newSuccess(null);
         }catch (Exception e){
             info.newFalse(e);
-            logger.error("退出登录出错",e);
+            log.error("退出登录出错",e);
+        }
+        return info;
+    }
+
+    @PostMapping(value = "/uploadFile.json",name = "文件上传demo")
+    public CPViewResultInfo uploadFile(CPViewResultInfo info, MultipartFile multipartFile){
+        try{
+            info.newSuccess(fastDFSClientWrapper.uploadFile(multipartFile));
+        }catch (Exception e){
+            info.newFalse(e);
+            log.error("",e);
         }
         return info;
     }

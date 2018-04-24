@@ -82,7 +82,12 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.0</version>
         </dependency>
-
+        <!--fastdfs文件系统-->
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.1-RELEASE</version>
+        </dependency>
         <!-- Json包 -->
         <dependency>
             <groupId>com.alibaba</groupId>

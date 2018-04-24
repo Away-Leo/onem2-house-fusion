@@ -36,7 +36,7 @@ public class SysMenuConfigAppService {
      * @Copyright 重庆壹平方米网络科技有限公司
      */
     public SysMenuConfigDto findById(Long id) throws Exception{
-        return this.sysMenuConfigDomainService.findById(id);
+        return this.sysMenuConfigDomainService.findById(id,SysMenuConfigDto.class);
     }
 
     /**

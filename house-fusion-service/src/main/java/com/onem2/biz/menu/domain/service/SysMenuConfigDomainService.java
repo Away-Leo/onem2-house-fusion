@@ -1,16 +1,16 @@
 package com.onem2.biz.menu.domain.service;
 
 
-import com.onem2.fusion.base.CPContext;
 import com.onem2.biz.menu.app.dto.SysMenuConfigDto;
 import com.onem2.biz.menu.domain.entity.SysMenuConfig;
 import com.onem2.biz.menu.domain.repositry.SysMenuConfigRepository;
+import com.onem2.fusion.base.CPContext;
+import com.onem2.fusion.base.base.BaseDomainService;
 import com.onem2.fusion.base.util.ObjectHelper;
 import com.onem2.fusion.base.util.ObjectProperUtil;
 import com.zds.common.lang.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,32 +25,11 @@ import java.util.*;
  * @copyright 重庆壹平方米网络科技有限公司
  */
 @Service
-public class SysMenuConfigDomainService {
+public class SysMenuConfigDomainService extends BaseDomainService<SysMenuConfigRepository,SysMenuConfig,SysMenuConfigDto>{
 
     @Autowired
     private SysMenuConfigRepository sysMenuConfigRepository;
 
-
-    /**
-     * @Author: Away
-     * @Description: 按照ID查找
-     * @Param: id
-     * @Return com.onem2.biz.menu.app.dto.SysMenuConfigDto
-     * @Date 2018/2/8 11:35
-     * @Copyright 重庆壹平方米网络科技有限公司
-     */
-    public SysMenuConfigDto findById(Long id) throws Exception {
-        if (ObjectHelper.isNotEmpty(id)) {
-            SysMenuConfig sourceData = this.sysMenuConfigRepository.getOne(id);
-            if (ObjectHelper.isNotEmpty(sourceData)) {
-                return sourceData.to(SysMenuConfigDto.class);
-            } else {
-                throw new BusinessException("PX002", "按照id查找系统菜单配置出错，无此数据");
-            }
-        } else {
-            throw new BusinessException("PX001", "按照ID查找系统菜单配置出错，参数为空");
-        }
-    }
 
     /**
      * @Author: Away
@@ -64,7 +43,7 @@ public class SysMenuConfigDomainService {
         if (ObjectHelper.isNotEmpty(sourceData)) {
             //更新
             if (ObjectHelper.isNotEmpty(sourceData.getId())) {
-                SysMenuConfigDto oldData = this.findById(sourceData.getId());
+                SysMenuConfigDto oldData = findById(sourceData.getId(),SysMenuConfigDto.class);
                 oldData = ObjectProperUtil.compareAndValue(sourceData, oldData, false, new String[]{"menuUrl"});
                 oldData.setRawUpdateTime(new Date());
                 oldData.setRawModifier(CPContext.getContext().getSeUserInfo().getUserName());
@@ -93,31 +72,6 @@ public class SysMenuConfigDomainService {
         } else {
             return null;
         }
-    }
-
-    /**
-     * @Author: Away
-     * @Description: 回调组装菜单树形结构
-     * @Param: sourceData
-     * @Return java.util.List<com.onem2.biz.menu.app.dto.SysMenuConfigDto>
-     * @Date 2018/2/8 16:21
-     * @Copyright 重庆壹平方米网络科技有限公司
-     */
-    private List<SysMenuConfigDto> packMenuTree(List<SysMenuConfigDto> parentData, List<SysMenuConfigDto> childData) {
-        if (ObjectHelper.isNotEmpty(parentData) && parentData.size() > 0) {
-            for (SysMenuConfigDto temp : parentData) {
-                if (ObjectHelper.isNotEmpty(childData) && childData.size() > 0) {
-                    for (SysMenuConfigDto temp2 : childData) {
-                        if (temp2.getMenuPid() == temp.getId()) {
-                            temp.getNodes().add(temp2);
-                            childData.remove(temp2);
-                            packMenuTree(temp.getNodes(), childData);
-                        }
-                    }
-                }
-            }
-        }
-        return parentData;
     }
 
     public static List<SysMenuConfigDto> createTreeMenus(List<SysMenuConfigDto> menus) {
@@ -153,26 +107,17 @@ public class SysMenuConfigDomainService {
 
     /**
      * @Author: Away
-     * @Description: 根据条件查找分页数据
+     * @Title: findByConditions
+     * @Description: 根据条件查询分页数据
      * @Param: pageable
      * @Param: condition
-     * @Return org.springframework.data.domain.Page<com.onem2.biz.menu.app.dto.SysMenuConfigDto>
-     * @Date 2018/2/23 14:00
-     * @Copyright 重庆壹平方米网络科技有限公司
+     * @Return: org.springframework.data.domain.Page<com.onem2.biz.menu.app.dto.SysMenuConfigDto>
+     * @Date: 2018/4/24 16:40
+     * @Version: 2018/4/24 16:40
      */
     public Page<SysMenuConfigDto> findByConditions(Pageable pageable, SysMenuConfigDto condition) throws Exception {
         Page<SysMenuConfig> sourceData = this.sysMenuConfigRepository.findByConditions(pageable, condition);
-        List<SysMenuConfigDto> returnList = new ArrayList<>();
-        Page<SysMenuConfigDto> returnData = null;
-        if (ObjectHelper.isNotEmpty(sourceData)) {
-            for (SysMenuConfig temp : sourceData.getContent()) {
-                returnList.add(temp.to(SysMenuConfigDto.class));
-            }
-            returnData = new PageImpl<SysMenuConfigDto>(returnList, pageable, sourceData.getTotalElements());
-        } else {
-            returnData = new PageImpl<SysMenuConfigDto>(returnList, pageable, 0);
-        }
-        return returnData;
+        return toDtoPage(sourceData,SysMenuConfigDto.class);
     }
 
     /**
