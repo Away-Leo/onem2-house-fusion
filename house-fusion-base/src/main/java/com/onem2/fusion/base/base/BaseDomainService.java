@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,15 +177,15 @@ public abstract class BaseDomainService<CT extends BaseRepository<BE,Long>,BE ex
      * @Date: 2018/4/24 16:51
      * @Version: 2018/4/24 16:51
      */
-    public <T> PageImpl<T> toDtoPage(Page<BE> sourceData,Class<T> tClass){
+    public <T> PageImpl<T> toDtoPage(Page<BE> sourceData, Class<T> tClass, Pageable pageable){
         if(ObjectHelper.isNotEmpty(sourceData)&&ObjectHelper.isNotEmpty(sourceData.getContent())&&sourceData.getContent().size()>0){
             List<T> returnList=new ArrayList<>(sourceData.getContent().size());
             for(BE temp:sourceData.getContent()){
                 returnList.add(temp.to(tClass));
             }
-            return new PageImpl<>(returnList,sourceData.getPageable(),sourceData.getTotalElements());
+            return new PageImpl<>(returnList,pageable,sourceData.getTotalElements());
         }else{
-            return new PageImpl<>(new ArrayList<T>(0),sourceData.getPageable(),0);
+            return new PageImpl<>(new ArrayList<T>(0),pageable,0);
         }
     }
 

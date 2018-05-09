@@ -1,7 +1,9 @@
 package com.onem2.biz.user.app.service;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.onem2.biz.user.app.dto.UserDto;
 import com.onem2.biz.user.domain.service.UserDomainService;
+import com.onem2.fusion.apis.test.TestInter;
 import com.onem2.fusion.base.enums.ENUM_EXCEPTION;
 import com.onem2.fusion.base.util.ObjectHelper;
 import com.zds.common.lang.exception.BusinessException;
@@ -28,6 +30,9 @@ public class UserAppService {
     private final UserDomainService userDomainService;
 
     private final UserInfoAppService userInfoAppService;
+
+    @Reference
+    private TestInter testInter;
 
 
     @Autowired
@@ -73,6 +78,7 @@ public class UserAppService {
      * @Version: 2018/4/12 14:59
      */
     public UserDto userRegister(UserDto toRegisterUser) throws Exception{
+        String test=testInter.FirstTest("");
         if(ObjectHelper.isNotEmpty(toRegisterUser)){
             UserDto sameNameUser=this.userDomainService.findByUserName(toRegisterUser.getUserName());
             if(ObjectHelper.isEmpty(sameNameUser)){

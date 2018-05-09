@@ -17,6 +17,12 @@
             <artifactId>house-fusion-base</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!--其他系统依赖-->
+        <dependency>
+            <groupId>com.onem2</groupId>
+            <artifactId>house-fusion-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

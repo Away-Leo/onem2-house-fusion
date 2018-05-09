@@ -117,7 +117,7 @@ public class SysMenuConfigDomainService extends BaseDomainService<SysMenuConfigR
      */
     public Page<SysMenuConfigDto> findByConditions(Pageable pageable, SysMenuConfigDto condition) throws Exception {
         Page<SysMenuConfig> sourceData = this.sysMenuConfigRepository.findByConditions(pageable, condition);
-        return toDtoPage(sourceData,SysMenuConfigDto.class);
+        return toDtoPage(sourceData,SysMenuConfigDto.class,pageable);
     }
 
     /**
